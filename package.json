@@ -1,0 +1,9 @@
+{
+  "name": "asyncAdapter",
+  "version": "0.0.0",
+  "description": "Adapt callback pattern functions into async-await ready functions",
+  "main": "index.js",
+  "author": "Geoff Davis <geoffdavis92@gmail.com>",
+  "license": "MIT",
+  "private": false
+}
