@@ -1,10 +1,10 @@
 # asyncAdapter
 
-Take functions with a callback handler pattern and use them with `async/await`!
+Take functions with a callback pattern and use them with `async/await`!
 
 ## The Problem
 
-Let's say you have a legacy function that sends an `XMLHttpRequest` that sends data to a callback function argument, for example:
+Let's say you have a legacy function that creates an `XMLHttpRequest` which passes response data to a callback function, for example:
 
 ```javascript
 function httpGET(endpoint, callback) {
@@ -14,9 +14,9 @@ function httpGET(endpoint, callback) {
       callback(JSON.parse(xhr.responseText));
     }
   });
-  xhr.open('GET', endpoint);
+  xhr.open("GET", endpoint);
   xhr.send();
-};
+}
 ```
 
 It has been a trusty sidekick, but it is a little outdated and makes using retrieved data more involved than current Javascript needs to be.
@@ -27,4 +27,99 @@ What could you do?
 
 ## The Solution
 
-Enter **asyncAdapter**. 
+Enter **`asyncAdapter`**. This nifty utility **_magically_** makes the function into a new `Promise`-based function, allowing it to be `await`-ed or otherwise handled like a Promise; this is achieved by passing in the Promise's `resolve` argument where the original function's callback would go.
+
+(Okay so it is not exactly *magic*, but it's still pretty cool)
+
+Here is how you would use the example function above with `asyncAdapter`:
+
+```javascript
+const asyncHttpGET = asyncAdapter(httpGET,'https://example.com/api/data');
+
+(async function someAsyncFunction() {
+  const data = await asyncHttpGET;
+  console.log(data); // -> { foo: 'bar' }
+})()
+```
+
+The **first argument** to the adapter is the original function name, and the **rest of the arguments** constitute any arguments you would pass to the original function, in the same order.
+
+Note that you should **not** pass a function into the `asyncAdapter` arguments, unless that function can return a value (e.g. not for an AJAX/`Promise`-based function).
+
+Here is an example of a non-asynchronous function being used with `asyncAdapter`:
+
+```javascript
+// Original function
+const add = (n1,n2,callback) => callback(n1 + n2);
+
+// Add callback function to return value
+const asyncSum20 = asyncAdapter(add,10,10,n => n);
+
+// Add callback function to return value with side effects
+const asyncSum50 = asyncAdapter(add,10,10,n => n + 30);
+
+// Use inside function to create DRY async version of original function
+const asyncSum = (n1,n2,n3) => asyncAdapter(add,n1,n2, n => n + n3);
+
+(async function someAsyncFunction() {
+  const sum20 = await asyncSum20;
+  const sum50 = await asyncSum50;
+  const sum100 = await asyncSum(5,20,75);
+
+  console.log(sum20); // -> 20
+  console.log(sum50); // -> 50
+  console.log(sum100); // -> 100
+})
+```
+
+<!--
+
+```javascript
+const asyncAdapter = (fn, ...args) => {
+  /**
+    * Return the `Promise`.
+    * This is what makes the function work with
+    * `async`/`await`.
+    */
+  return new Promise((resolve, reject) => {
+
+    /**
+      * If no parameters are provided for `fn`, fill
+      * in the `args` array with `null` values.
+      *
+      * This allows the adapter to still create a
+      * working `Promise` even if required parameters 
+      * are not filled.
+      */
+    const safeArgs = args.length > 0 ? 
+      args : fn.length === 1 ? 
+        new Array(fn.length).fill(null) : 
+        new Array(fn.length - 1).fill(null);
+    try {
+      /**
+        * If the function's parameter count is greater than 1
+        * and does not equal the length of `safeArgs`, call
+        * `fn` and pass in the Promise resolver as the callback.
+        */
+      if (fn.length > 1 && fn.length !== safeArgs.length) {
+        fn(...safeArgs, resolve);
+      } else {
+      	/**
+          * Else, wrap `fn` in a resolver.
+          * This only works if `fn` uses `return` to produce a workable value.
+          */
+        resolve(fn(...safeArgs));
+      }
+    }
+    catch (e) {
+      /**
+        * Any errors in trying to resolve the `Promise` with `fn` get sent here
+        * and used to reject the `Promise`.
+        */
+      reject(new Error(e));
+    }
+  });
+};
+```
+
+-->
