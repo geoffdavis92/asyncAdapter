@@ -1,16 +1,40 @@
 {
-  "name": "asyncAdapter",
-  "version": "0.0.0",
-  "description": "Adapt callback pattern functions into async-await ready functions",
-  "main": "index.js",
-  "author": "Geoff Davis <geoffdavis92@gmail.com>",
-  "license": "MIT",
-  "private": false,
-  "dependencies": {},
-  "devDependencies": {
-    "jest": "^21.2.1",
-    "rollup": "^0.52.1",
-    "rollup-plugin-typescript2": "^0.8.4",
-    "typescript": "^2.6.2"
-  }
+	"name": "asyncAdapter",
+	"version": "0.0.0",
+	"description":
+		"Adapt callback pattern functions into async-await ready functions",
+	"main": "index.js",
+	"author": "Geoff Davis <geoffdavis92@gmail.com>",
+	"license": "MIT",
+	"private": false,
+	"scripts": {
+		"r": "./node_modules/.bin/rollup -c",
+		"demo": "cd demo && ../node_modules/.bin/httpster -p 1200; cd -;",
+		"rollup": "yarn run r --watch",
+		"test": "jest"
+	},
+	"devDependencies": {
+		"@types/es6-promise": "^0.0.33",
+		"babel-preset-env": "^1.6.1",
+		"httpster": "^1.0.3",
+		"jest": "^21.2.1",
+		"rollup": "^0.52.1",
+		"rollup-plugin-babel": "^3.0.2",
+		"rollup-plugin-typescript2": "^0.8.4",
+		"ts-jest": "^21.2.4",
+		"typescript": "^2.6.2"
+	},
+	"babel": {
+		"presets": [
+			[
+				"env",
+				{
+					"target": {
+						"browsers": ["last 2 versions"]
+					},
+					"modules": false
+				}
+			]
+		]
+	}
 }
