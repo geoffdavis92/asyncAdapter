@@ -13,8 +13,12 @@
 <body>
 	<script type="text/babel">
 		const add = (n1, n2, callback) => { const result = n1 + n2; return callback(result) }; const concatStrings = function (s1,s2,callback){
-		const string = `${s1} ${s2}`; return callback ? callback(string) : string }; const asyncTest = (async () => { const result
-		= await asyncAdapter(concatStrings,'test','world'); console.log(result) })()
+		const string = `${s1} ${s2}`; return callback ? callback(string) : string }; const asyncTest = (async () => { 
+			const concatString = await asyncAdapter(concatStrings,'test','world'); 
+			console.log(concatString); 
+			const sumOf50 = await asyncAdapter(add,40,10); 
+			console.log(sumOf50) 
+		})()
 	</script>
 </body>
 
