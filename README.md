@@ -19,7 +19,7 @@ function httpGET(endpoint, callback) {
 }
 ```
 
-It has been a trusty sidekick, but it is a little outdated and makes using retrieved data more involved than current Javascript needs to be.
+It has been a trusty sidekick, but it is a little outdated and makes using retrieved data more involved than modern Javascript needs to be.
 
 You want to use the latest and greatest APIs that tc39 and Babel can provide– like `async/await` or the `Promise` API– and callbacks just don't cut it.
 
@@ -71,55 +71,3 @@ const asyncSum = (n1,n2,n3) => asyncAdapter(add,n1,n2, n => n + n3);
   console.log(sum100); // -> 100
 })
 ```
-
-<!--
-
-```javascript
-const asyncAdapter = (fn, ...args) => {
-  /**
-    * Return the `Promise`.
-    * This is what makes the function work with
-    * `async`/`await`.
-    */
-  return new Promise((resolve, reject) => {
-
-    /**
-      * If no parameters are provided for `fn`, fill
-      * in the `args` array with `null` values.
-      *
-      * This allows the adapter to still create a
-      * working `Promise` even if required parameters 
-      * are not filled.
-      */
-    const safeArgs = args.length > 0 ? 
-      args : fn.length === 1 ? 
-        new Array(fn.length).fill(null) : 
-        new Array(fn.length - 1).fill(null);
-    try {
-      /**
-        * If the function's parameter count is greater than 1
-        * and does not equal the length of `safeArgs`, call
-        * `fn` and pass in the Promise resolver as the callback.
-        */
-      if (fn.length > 1 && fn.length !== safeArgs.length) {
-        fn(...safeArgs, resolve);
-      } else {
-      	/**
-          * Else, wrap `fn` in a resolver.
-          * This only works if `fn` uses `return` to produce a workable value.
-          */
-        resolve(fn(...safeArgs));
-      }
-    }
-    catch (e) {
-      /**
-        * Any errors in trying to resolve the `Promise` with `fn` get sent here
-        * and used to reject the `Promise`.
-        */
-      reject(new Error(e));
-    }
-  });
-};
-```
-
--->
