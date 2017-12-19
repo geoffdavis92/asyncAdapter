@@ -3,7 +3,7 @@ import ts from "rollup-plugin-typescript2";
 
 export default {
 	input: "src/index.ts",
-	plugins: [ts()],
+	plugins: [ts(), babel()],
 	output: [
 		{
 			file: "demo/js/asyncAdapter.js",
@@ -11,11 +11,11 @@ export default {
 			name: "asyncAdapter"
 		},
 		{
-			file: "dist/asyncAdapter.ts",
+			file: "dist/asyncAdapter.esm.js",
 			format: "es"
 		},
 		{
-			file: "dist/asyncAdapter.js",
+			file: "dist/asyncAdapter.cjs.js",
 			format: "cjs"
 		}
 	]

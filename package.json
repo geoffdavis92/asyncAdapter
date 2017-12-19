@@ -1,20 +1,24 @@
 {
-	"name": "asyncAdapter",
+	"name": "async-adapter",
 	"version": "0.0.0",
 	"description":
 		"Adapt callback pattern functions into async-await ready functions",
-	"main": "index.js",
 	"author": "Geoff Davis <geoffdavis92@gmail.com>",
 	"license": "MIT",
+	"main": "dist/asyncAdapter.cjs.js",
+	"jsnext:main": "dist/asyncAdapter.esm.js",
+	"module": "dist/asyncAdapter.esm.js",
 	"private": false,
 	"scripts": {
 		"r": "./node_modules/.bin/rollup -c",
 		"demo": "cd demo && ../node_modules/.bin/httpster -p 1200; cd -;",
-		"rollup": "yarn run r --watch",
+		"rollup": "yarn r",
+		"start": "yarn rollup --watch",
 		"test": "jest"
 	},
 	"devDependencies": {
 		"@types/es6-promise": "^0.0.33",
+		"babel-plugin-transform-flow-strip-types": "^6.22.0",
 		"babel-preset-env": "^1.6.1",
 		"httpster": "^1.0.3",
 		"jest": "^21.2.1",
@@ -25,6 +29,7 @@
 		"typescript": "^2.6.2"
 	},
 	"babel": {
+		"plugins": ["transform-flow-strip-types"],
 		"presets": [
 			[
 				"env",
