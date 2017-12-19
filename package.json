@@ -1,8 +1,7 @@
 {
 	"name": "async-adapter",
 	"version": "0.0.0",
-	"description":
-		"Adapt callback pattern functions into async-await ready functions",
+	"description": "Adapt callback pattern functions into async-await ready functions",
 	"author": "Geoff Davis <geoffdavis92@gmail.com>",
 	"license": "MIT",
 	"main": "dist/asyncAdapter.cjs.js",
@@ -29,13 +28,17 @@
 		"typescript": "^2.6.2"
 	},
 	"babel": {
-		"plugins": ["transform-flow-strip-types"],
+		"plugins": [
+			"transform-flow-strip-types"
+		],
 		"presets": [
 			[
 				"env",
 				{
 					"target": {
-						"browsers": ["last 2 versions"]
+						"browsers": [
+							"last 2 versions"
+						]
 					},
 					"modules": false
 				}
