@@ -2,6 +2,8 @@
 
 Take functions with a callback pattern and use them with `async/await`!
 
+***NEW!*** [Read the article](https://github.com/geoffdavis92/asyncAdapter) on [dev.to](https://dev.to/)
+
 ## Installation
 
 Using yarn:
