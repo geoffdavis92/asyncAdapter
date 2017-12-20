@@ -2,7 +2,7 @@
 
 Take functions with a callback pattern and use them with `async/await`!
 
-***NEW!*** [Read the article](https://github.com/geoffdavis92/asyncAdapter) on [dev.to](https://dev.to/)
+***NEW!*** [Read the article](https://dev.to/geoffdavis/adapting-those-callbacks-to-async-functions-3ihg) on [dev.to](https://dev.to/)
 
 ## Installation
 
